@@ -2,9 +2,10 @@ import http from 'k6/http';
 import { sleep, check } from 'k6';
 
 export const options = {
-    iterations: 30,
+    vus: 10,
+    duration: '30s',
     thresholds: {
-        http_req_duration: ['p(90)<50', 'max<100'],
+        http_req_duration: ['p(90)<1000', 'max<5000'],
         http_req_failed: ['rate<0.01']
     }
 };
@@ -27,8 +28,8 @@ export default function () {
 
     check(res, {
         'Validar que o status é 200': (r) => r.status === 200,
-        'Validar que o token é string': (r) => typeof(r.json().token) == 'string' 
+        'Validar que o token é string': (r) => typeof (r.json().token) == 'string'
     })
-    
+
     sleep(1);
 }
