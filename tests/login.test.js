@@ -1,5 +1,6 @@
-import http from 'k6/http';
-import { sleep, check } from 'k6';
+import http from 'k6/http'
+import { sleep, check } from 'k6'
+import { pegarBaseURL } from '../utils/variaveis.js'
 const postLogin = JSON.parse(open('../fixtures/postLogin.json'))
 
 export const options = {
@@ -12,10 +13,10 @@ export const options = {
         http_req_duration: ['p(90)<1000', 'max<5000'],
         http_req_failed: ['rate<0.01']
     }
-};
+}
 
 export default function () {
-    const url = 'http://localhost:3000/login';
+    const url = pegarBaseURL() + '/login'
 
     const payload = JSON.stringify(postLogin);
 
@@ -23,7 +24,7 @@ export default function () {
         headers: {
             'Content-Type': 'application/json',
         },
-    };
+    }
 
     const res = http.post(url, payload, params);
 
